@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace=绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="com.chen.dao.UserMapper">
+<!--    <resultMap id ="BaseResultMap" type="com.chen.pojo.User">-->
+<!--        <id column="id" property="id"/>-->
+<!--        <result column="name" property="name"/>-->
+<!--        <result column="email" property="email"/>-->
+<!--    </resultMap>-->
+
+    <sql id="FIELDS">
+        SELECT id, username, `password`, email FROM user
+    </sql>
+
+    <select id="selectById" parameterType="Integer" resultType="User">
+        <include refid="FIELDS" />
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByUsername" parameterType="String" resultType="User">
+        <include refid="FIELDS" />
+        WHERE username = #{username}
+        LIMIT 1
+    </select>
+
+    <select id="getAllUser" parameterType="Integer" resultType="User" >
+        select * from user
+    </select>
+
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user(username, password, email)
+        VALUES (#{username},#{password}, #{email})
+    </insert>
+
+    <update id="updatePassword" parameterType="User">
+        UPDATE user SET password = #{password}
+        WHERE username = #{username}
+    </update>
+
+    <update id="updateEmail" parameterType="User">
+        UPDATE user SET email = #{email}
+        WHERE username = #{username}
+    </update>
+
+    <update id="updateUsername" parameterType="User">
+        UPDATE user SET username = #{username}
+        WHERE username = #{username}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        DELETE FROM user WHERE id = #{id}
+    </delete>
+
+</mapper>
